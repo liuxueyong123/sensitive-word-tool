@@ -1,5 +1,5 @@
 {
-  "main": "index.js",
+  "main": "lib/index.esm.js",
   "name": "sensitive-word-tool",
   "displayName": "sensitive-word-tool",
   "description": "基于 dfa 算法实现，非常轻巧的 JavaScript 敏感词过滤库🚀",
@@ -21,12 +21,15 @@
     "敏感词",
     "sensitive word"
   ],
+  "type": "module",
   "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clear": "rm -rf lib/",
+    "build": "pnpm clear && rollup -c"
   },
   "devDependencies": {
     "@eslint/create-config": "0.4.2",
+    "@rollup/plugin-typescript": "^11.0.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": ">=5.0.0 <6.0.0",
     "eslint": "^8.35.0",
@@ -34,6 +37,8 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
+    "rollup": "^3.18.0",
+    "rollup-plugin-dts": "^5.2.0",
     "typescript": "^4.9.5"
   }
 }
