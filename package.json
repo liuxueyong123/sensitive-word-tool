@@ -1,10 +1,14 @@
 {
-  "main": "lib/index.esm.js",
+  "main": "lib/index.cjs.js",
   "typings": "lib/index.d.ts",
+  "exports": {
+    "import": "./lib/index.esm.js",
+    "default": "./lib/index.cjs.js"
+  },
   "name": "sensitive-word-tool",
   "displayName": "sensitive-word-tool",
   "description": "基于 dfa 算法实现，非常轻巧的 JavaScript 敏感词过滤库🚀",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "liuxueyong123",
   "author": {
     "name": "liuxueyong123",
@@ -22,7 +26,6 @@
     "敏感词",
     "sensitive word"
   ],
-  "type": "module",
   "license": "MIT",
   "scripts": {
     "clear": "rm -rf lib/",
