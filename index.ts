@@ -1,6 +1,6 @@
 type WordMap = { [property: string]: WordMap | boolean }
 
-export class SensitiveWordTool {
+class SensitiveWordTool {
   private map: WordMap = {}
   private static LeafKey = '__leaf__'
   private static ignoredCharCodeMap = SensitiveWordTool.generateIgnoredCharCodeMap()
@@ -111,3 +111,5 @@ export class SensitiveWordTool {
     return result
   }
 }
+
+export default SensitiveWordTool

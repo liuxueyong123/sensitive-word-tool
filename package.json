@@ -1,29 +1,27 @@
 {
   "main": "index.js",
   "name": "sensitive-word-tool",
-	"displayName": "sensitive-word-tool",
-	"description": "Parse the selected HTML and copying the generated CSS class tree to the clipboard, eliminating the trouble of writing CSS classes manually",
-	"version": "0.1.0",
-	"publisher": "liuxueyong123",
-	"author": {
-		"name": "liuxueyong123",
-		"email": "liuxueyong123@126.com",
-		"url": "https://github.com/liuxueyong123"
-	},
-	"icon": "assets/images/icon.png",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/liuxueyong123/html2cssTree.git"
-	},
-	"bugs": {
-		"url": "https://github.com/liuxueyong123/html2cssTree/issues/new"
-	},
-	"homepage": "https://github.com/liuxueyong123/html2cssTree",
-	"keywords": [
-		"html parse",
-		"css class tree"
-	],
-  "license": "ISC",
+  "displayName": "sensitive-word-tool",
+  "description": "基于 dfa 算法实现，非常轻巧的 JavaScript 敏感词过滤库🚀",
+  "version": "0.1.0",
+  "publisher": "liuxueyong123",
+  "author": {
+    "name": "liuxueyong123",
+    "email": "liuxueyong123@126.com",
+    "url": "https://github.com/liuxueyong123"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liuxueyong123/sensitive-word-tool.git"
+  },
+  "bugs": "https://github.com/liuxueyong123/sensitive-word-tool/issues/new",
+  "homepage": "https://github.com/liuxueyong123/sensitive-word-tool",
+  "keywords": [
+    "sensitive",
+    "敏感词",
+    "sensitive word"
+  ],
+  "license": "MIT",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   }
