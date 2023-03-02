@@ -1,15 +1,15 @@
-type WordMap = { [property: string]: WordMap | boolean }
+interface WordMap { [property: string]: WordMap | boolean }
 
 class SensitiveWordTool {
-  private map: WordMap = {}
-  private static LeafKey = '__leaf__'
-  private static ignoredCharCodeMap = SensitiveWordTool.generateIgnoredCharCodeMap()
+  private readonly map: WordMap = {}
+  private static readonly LeafKey = '__leaf__'
+  private static readonly ignoredCharCodeMap = SensitiveWordTool.generateIgnoredCharCodeMap()
 
   /**
    * @description: 构建特殊字符的哈希表
    * @return {*}
    */
-  private static generateIgnoredCharCodeMap(): Record<number, boolean> {
+  private static generateIgnoredCharCodeMap (): Record<number, boolean> {
     const ignoreChars =
       ' \t\r\n~!@#$%^&*()_+-=【】、{}|;\':"，。、《》？αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ。，、；：？！…—·ˉ¨‘’“”々～‖∶＂＇｀｜〃〔〕〈〉《》「」『』．〖〗【】（）［］｛｝ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩①②③④⑤⑥⑦⑧⑨⑩⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇≈≡≠＝≤≥＜＞≮≯∷±＋－×÷／∫∮∝∞∧∨∑∏∪∩∈∵∴⊥∥∠⌒⊙≌∽√§№☆★○●◎◇◆□℃‰€■△▲※→←↑↓〓¤°＃＆＠＼︿＿￣―♂♀┌┍┎┐┑┒┓─┄┈├┝┞┟┠┡┢┣│┆┊┬┭┮┯┰┱┲┳┼┽┾┿╀╁╂╃└┕┖┗┘┙┚┛━┅┉┤┥┦┧┨┩┪┫┃┇┋┴┵┶┷┸┹┺┻╋╊╉╈╇╆╅╄'
     const ignoredCharCodeMap: Record<number, boolean> = {}
@@ -24,7 +24,7 @@ class SensitiveWordTool {
    * @param {string} word 待过滤字符串
    * @return {*}
    */
-  private static filterIgnoredChar(word: string): string {
+  private static filterIgnoredChar (word: string): string {
     let ignoredWord = ''
     for (let i = 0, len = word.length; i < len; i++) {
       if (!SensitiveWordTool.ignoredCharCodeMap[word.charCodeAt(i)]) {
@@ -39,7 +39,7 @@ class SensitiveWordTool {
    * @param {WordMap} point
    * @return {*}
    */
-  private static isLeaf(point: WordMap): boolean {
+  private static isLeaf (point: WordMap): boolean {
     return Reflect.has(point, SensitiveWordTool.LeafKey)
   }
 
@@ -47,9 +47,9 @@ class SensitiveWordTool {
    * @description: 生成敏感词叶子节点
    * @return {*}
    */
-  private static generateLeafObj(): WordMap {
+  private static generateLeafObj (): WordMap {
     return {
-      [SensitiveWordTool.LeafKey]: true,
+      [SensitiveWordTool.LeafKey]: true
     }
   }
 
@@ -58,7 +58,7 @@ class SensitiveWordTool {
    * @param {string[]} wordList 敏感词数组
    * @return {*}
    */
-  addWords(wordList: string[]): void {
+  addWords (wordList: string[]): void {
     for (let i = 0, len = wordList.length; i < len; i++) {
       let point = this.map
       // 对于配置的敏感词过滤掉特殊符号
@@ -83,7 +83,7 @@ class SensitiveWordTool {
    * @param {string} content 待匹配内容
    * @return {string[]} 匹配到的敏感词数组
    */
-  match(content: string): string[] {
+  match (content: string): string[] {
     const result: string[] = []
     let stack: string[] = []
     let point = this.map
