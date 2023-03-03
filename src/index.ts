@@ -118,7 +118,7 @@ class SensitiveWordTool {
    * @return {string[]} 匹配到的敏感词数组
    */
   public match (content: string): string[] {
-    const result: string[] = []
+    const result = new Set<string>()
     let stack: string[] = []
     let point = this.map
     for (let i = 0, len = content.length; i < len; i++) {
@@ -136,13 +136,13 @@ class SensitiveWordTool {
         i = i - stack.length
       } else if (SensitiveWordTool.isLeaf(point)) {
         stack.push(char)
-        result.push(stack.join(''))
+        result.add(stack.join(''))
       }
 
       stack = []
       point = this.map
     }
-    return result
+    return [...result]
   }
 }
 

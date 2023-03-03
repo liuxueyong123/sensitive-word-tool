@@ -8,7 +8,7 @@
   "name": "sensitive-word-tool",
   "displayName": "sensitive-word-tool",
   "description": "基于 dfa 算法实现，非常轻巧的 JavaScript 敏感词过滤库🚀",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "publisher": "liuxueyong123",
   "author": {
     "name": "liuxueyong123",
