@@ -1,18 +1,22 @@
+interface Options {
+    wordList?: string[];
+    noiseWords?: string;
+}
 declare class SensitiveWordTool {
     private readonly map;
+    private noiseWordMap;
     private static readonly LeafKey;
-    private static readonly ignoredCharCodeMap;
+    /**
+     * @description: 初始化
+     * @param {Options} options
+     * @return {*}
+     */
+    constructor(options?: Options);
     /**
      * @description: 构建特殊字符的哈希表
      * @return {*}
      */
-    private static generateIgnoredCharCodeMap;
-    /**
-     * @description: 过滤掉字符串中的特殊字符
-     * @param {string} word 待过滤字符串
-     * @return {*}
-     */
-    private static filterIgnoredChar;
+    private static generateNoiseWordMap;
     /**
      * @description: 当前对象是否是叶子节点
      * @param {WordMap} point
@@ -24,6 +28,23 @@ declare class SensitiveWordTool {
      * @return {*}
      */
     private static generateLeafObj;
+    /**
+     * @description: 过滤掉字符串中的特殊字符
+     * @param {string} word 待过滤字符串
+     * @return {*}
+     */
+    private filterIgnoredChar;
+    /**
+     * @description: 手动设置干扰词，不设置时将采用默认干扰词
+     * @param {string} noiseWords
+     * @return {*}
+     */
+    setNoiseWords(noiseWords: string): void;
+    /**
+     * @description: 清空敏感词
+     * @return {*}
+     */
+    clearWords(): void;
     /**
      * @description: 添加敏感词
      * @param {string[]} wordList 敏感词数组
@@ -38,4 +59,4 @@ declare class SensitiveWordTool {
     match(content: string): string[];
 }
 
-export { SensitiveWordTool as default };
+export { Options, SensitiveWordTool as default };

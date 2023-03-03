@@ -2,17 +2,25 @@ import { defaultNoiseWords } from './config'
 
 interface WordMap { [property: string]: WordMap | boolean }
 
+export interface Options {
+  wordList?: string[]
+  noiseWords?: string
+}
+
 class SensitiveWordTool {
   private readonly map: WordMap = {}
   private noiseWordMap = SensitiveWordTool.generateNoiseWordMap(defaultNoiseWords)
   private static readonly LeafKey = '__leaf__'
 
   /**
-   * @description: 初始化敏感词
-   * @param {string} wordList 需要过滤的敏感词
+   * @description: 初始化
+   * @param {Options} options
    * @return {*}
    */
-  constructor (wordList: string[] = []) {
+  constructor (options: Options = {}) {
+    const { wordList = [], noiseWords = '' } = options
+
+    noiseWords && this.setNoiseWords(noiseWords)
     this.addWords(wordList)
   }
 
