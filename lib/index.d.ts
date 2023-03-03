@@ -3,7 +3,7 @@ interface Options {
     noiseWords?: string;
 }
 declare class SensitiveWordTool {
-    private readonly map;
+    private map;
     private noiseWordMap;
     private static readonly LeafKey;
     /**

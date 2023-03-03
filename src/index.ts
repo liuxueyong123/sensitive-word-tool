@@ -8,7 +8,7 @@ export interface Options {
 }
 
 class SensitiveWordTool {
-  private readonly map: WordMap = {}
+  private map: WordMap = {}
   private noiseWordMap = SensitiveWordTool.generateNoiseWordMap(defaultNoiseWords)
   private static readonly LeafKey = '__leaf__'
 
@@ -84,7 +84,7 @@ class SensitiveWordTool {
    * @return {*}
    */
   public clearWords (): void {
-    this.noiseWordMap = {}
+    this.map = {}
   }
 
   /**
