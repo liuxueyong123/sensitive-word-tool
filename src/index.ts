@@ -72,6 +72,14 @@ class SensitiveWordTool {
   }
 
   /**
+   * @description: 清空敏感词
+   * @return {*}
+   */
+  public clearWords (): void {
+    this.noiseWordMap = {}
+  }
+
+  /**
    * @description: 添加敏感词
    * @param {string[]} wordList 敏感词数组
    * @return {*}
