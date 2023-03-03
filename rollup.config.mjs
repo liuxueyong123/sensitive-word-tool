@@ -1,7 +1,5 @@
 import typescript from '@rollup/plugin-typescript'
 import dts from 'rollup-plugin-dts'
-// const typescript = require('@rollup/plugin-typescript')
-// const dts = require('rollup-plugin-dts')
 
 const config = [
   {
@@ -36,5 +34,4 @@ const config = [
     plugins: [dts()]
   }
 ]
-// module.exports = config
 export default config
