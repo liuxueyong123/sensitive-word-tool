@@ -42,55 +42,110 @@ import SensitiveWordTool from 'sensitive-word-tool'
 
 ### 进行敏感词检测
 
+- 基础用法
+
 ```ts
 import SensitiveWordTool from 'sensitive-word-tool'
 
-const sensitiveWordTool = new SensitiveWordTool({
-  wordList: ['王八蛋', '王八羔子', '测试', '江南皮革厂']
-})
-const banWords = sensitiveWordTool.match('浙江温州，浙江温州，江南 皮革厂老板王$八&蛋，带着小姨子跑了')
-console.log(banWords) // ['江南皮革厂', '王八蛋']
-
-
-const banWords2 = sensitiveWordTool.match('皮革厂老板带着小姨子跑了')
-console.log(banWords2) // []
-
-
-sensitiveWordTool.addWords(['小姨子']) // 继续增加敏感词
-const banWords3 = sensitiveWordTool.match('江南皮革厂老板带着小姨子跑了')
-console.log(banWords3) // ['江南皮革厂', '小姨子']
-
-
-sensitiveWordTool.clearWords() // 清空当前的敏感词
-sensitiveWordTool.addWords(['江南皮革厂'])
-const banWords4 = sensitiveWordTool.match('江南皮革厂老板带着小姨子跑了')
-console.log(banWords4) // ['江南皮革厂']
-
-
-sensitiveWordTool.clearWords()
-sensitiveWordTool.setNoiseWords(' $') // 主动设置干扰词（不设置将使用默认干扰词），敏感词检测时会将文本中的干扰词删除再匹配
+const sensitiveWordTool = new SensitiveWordTool()
 sensitiveWordTool.addWords(['王八蛋', '王八羔子', '测试', '江南皮革厂'])
-const banWords5 = sensitiveWordTool.match('浙江温州，浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')
-console.log(banWords5) // ['江南皮革厂']
+sensitiveWordTool.match('浙江温州，浙江温州，江南 皮革厂老板王$八&蛋，带着小姨子跑了') // ['江南皮革厂', '王八蛋']
+sensitiveWordTool.match('皮革厂老板带着小姨子跑了') // []
+```
+
+- 进阶用法
+
+```ts
+// 初始化时设置敏感词
+const sensitiveWordTool = new SensitiveWordTool({ wordList: ['王八蛋', '王八羔子', '测试', '江南皮革厂'] })
+
+// 支持继续增加敏感词
+sensitiveWordTool.addWords(['小姨子'])
+sensitiveWordTool.match('江南皮革厂老板带着小姨子跑了')  // ['江南皮革厂', '小姨子']
 
 
+// 支持清空当前的敏感词
+sensitiveWordTool.clearWords()
+sensitiveWordTool.addWords(['江南皮革厂'])
+sensitiveWordTool.match('江南皮革厂老板带着小姨子跑了')  // ['江南皮革厂']
+
+
+// 支持主动设置干扰词（不设置将使用默认干扰词），敏感词检测时会将文本中的干扰词删除再匹配
+sensitiveWordTool.setNoiseWords(' $')
+sensitiveWordTool.match('浙江温州，浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')  // ['江南皮革厂']
+
+
+// 初始化时主动设置干扰词
 const sensitiveWordTool2 = new SensitiveWordTool({
   wordList: ['王八蛋', '王八羔子', '测试', '江南皮革厂'],
   noiseWords: ' $'
-}) // 初始化时主动设置干扰词
-const banWords6 = sensitiveWordTool2.match('浙江温州，浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')
-console.log(banWords6) // ['江南皮革厂']
-
-
-const sensitiveWordTool3 = new SensitiveWordTool() // 初始化时不带任何参数
-sensitiveWordTool3.addWords(['王八蛋', '王八羔子', '测试', '江南皮革厂'])
-const banWords6 = sensitiveWordTool3.match('浙江温州，浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')
-console.log(banWords6) // ['江南皮革厂', '王八蛋']
+})
+sensitiveWordTool2.match('浙江温州，浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')  // ['江南皮革厂']
 ```
 
 ### API
 
-文档待补充
+### Constructor
+
+构造函数
+
+#### 示例
+
+```ts
+const sensitiveWordTool2 = new SensitiveWordTool({
+  wordList: ['王八蛋', '王八羔子', '测试', '江南皮革厂'],
+  noiseWords: ' $'
+})
+```
+
+##### 参数
+
+- `wordList`: 可选。用于设置初始的敏感词。默认值：`[]`
+- `noiseWords`: 可选。用于设置干扰词，敏感词检测时会将待检测文本中的干扰词删除后再匹配。默认值：
+
+```
+ \t\r\n~!@#$%^&*()_+-=【】、{}|;\':"，。、《》？αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ。，、；：？！…—·ˉ¨‘’“”々～‖∶＂＇｀｜〃〔〕〈〉《》「」『』．〖〗【】（）［］｛｝ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩①②③④⑤⑥⑦⑧⑨⑩⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇≈≡≠＝≤≥＜＞≮≯∷±＋－×÷／∫∮∝∞∧∨∑∏∪∩∈∵∴⊥∥∠⌒⊙≌∽√§№☆★○●◎◇◆□℃‰€■△▲※→←↑↓〓¤°＃＆＠＼︿＿￣―♂♀┌┍┎┐┑┒┓─┄┈├┝┞┟┠┡┢┣│┆┊┬┭┮┯┰┱┲┳┼┽┾┿╀╁╂╃└┕┖┗┘┙┚┛━┅┉┤┥┦┧┨┩┪┫┃┇┋┴┵┶┷┸┹┺┻╋╊╉╈╇╆╅╄
+```
+
+### `setNoiseWords`
+
+设置干扰词。
+
+##### 示例
+
+```ts
+sensitiveWordTool.setNoiseWords(' $')
+```
+
+### `clearWords`
+
+清空当前设置的干扰词。
+
+##### 示例
+
+```ts
+sensitiveWordTool.clearWords()
+```
+
+### `addWords`
+
+继续增加敏感词。
+
+##### 示例
+
+```ts
+sensitiveWordTool.addWords(['王八蛋', '王八羔子', '测试', '江南皮革厂'])
+```
+
+### `match`
+
+从文本中匹配出所有出现过的敏感词。返回匹配到的敏感词数组，如未匹配则返回空数组。
+
+##### 示例
+
+```ts
+sensitiveWordTool2.match('浙江温州，浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')
+```
 
 ## TODOs
 
