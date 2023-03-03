@@ -8,7 +8,7 @@
   "name": "sensitive-word-tool",
   "displayName": "sensitive-word-tool",
   "description": "基于 dfa 算法实现，非常轻巧的 JavaScript 敏感词过滤库🚀",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "publisher": "liuxueyong123",
   "author": {
     "name": "liuxueyong123",
@@ -23,17 +23,23 @@
   "homepage": "https://github.com/liuxueyong123/sensitive-word-tool",
   "keywords": [
     "sensitive",
-    "敏感词",
-    "sensitive word"
+    "sensitive word",
+    "filter",
+    "DFA",
+    "敏感词"
   ],
   "license": "MIT",
   "scripts": {
     "clear": "rm -rf lib/",
-    "build": "pnpm clear && rollup -c"
+    "build": "pnpm clear && rollup -c",
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "devDependencies": {
     "@eslint/create-config": "0.4.2",
     "@rollup/plugin-typescript": "^11.0.0",
+    "@types/jest": "^29.4.0",
+    "@types/node": "*",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": ">=5.0.0 <6.0.0",
     "eslint": "^8.35.0",
@@ -41,8 +47,11 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
+    "jest": "^29.4.3",
     "rollup": "^3.18.0",
     "rollup-plugin-dts": "^5.2.0",
+    "ts-jest": "^29.0.5",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   }
 }

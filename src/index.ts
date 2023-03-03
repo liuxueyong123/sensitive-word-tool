@@ -6,6 +6,15 @@ class SensitiveWordTool {
   private static readonly ignoredCharCodeMap = SensitiveWordTool.generateIgnoredCharCodeMap()
 
   /**
+   * @description: 初始化敏感词
+   * @param {string} wordList 需要过滤的敏感词
+   * @return {*}
+   */
+  constructor (wordList: string[] = []) {
+    this.addWords(wordList)
+  }
+
+  /**
    * @description: 构建特殊字符的哈希表
    * @return {*}
    */

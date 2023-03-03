@@ -6,3 +6,5 @@
 
 # Misc
 .DS_Store
+
+coverage/*
