@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/dm/sensitive-word-tool)
 
-基于 dfa 算法实现，非常轻巧的 JavaScript 敏感词过滤库🚀
+基于 DFA 算法实现，非常轻巧的 JavaScript 敏感词处理库🚀🚀🚀
 
 ## 安装
 
@@ -49,7 +49,7 @@ import SensitiveWordTool from 'sensitive-word-tool'
 
 const sensitiveWordTool = new SensitiveWordTool()
 sensitiveWordTool.addWords(['王八蛋', '王八羔子', '测试', '江南皮革厂'])
-sensitiveWordTool.match('浙江温州，浙江温州，江南 皮革厂老板王$八&蛋，带着小姨子跑了') // ['江南皮革厂', '王八蛋']
+sensitiveWordTool.match('浙江温州，江南 皮革厂老板王$八&蛋，带着小姨子跑了') // ['江南皮革厂', '王八蛋']
 sensitiveWordTool.match('皮革厂老板带着小姨子跑了') // []
 ```
 
@@ -72,7 +72,7 @@ sensitiveWordTool.match('江南皮革厂老板带着小姨子跑了')  // ['江�
 
 // 支持主动设置干扰词（不设置将使用默认干扰词），敏感词检测时会将文本中的干扰词删除再匹配
 sensitiveWordTool.setNoiseWords(' $')
-sensitiveWordTool.match('浙江温州，浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')  // ['江南皮革厂']
+sensitiveWordTool.match('浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')  // ['江南皮革厂']
 
 
 // 初始化时主动设置干扰词
@@ -80,16 +80,14 @@ const sensitiveWordTool2 = new SensitiveWordTool({
   wordList: ['王八蛋', '王八羔子', '测试', '江南皮革厂'],
   noiseWords: ' $'
 })
-sensitiveWordTool2.match('浙江温州，浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')  // ['江南皮革厂']
+sensitiveWordTool2.match('浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')  // ['江南皮革厂']
 ```
 
-### API
+## API
 
-### Constructor
+### `构造函数`
 
-构造函数
-
-#### 示例
+##### 示例
 
 ```ts
 const sensitiveWordTool2 = new SensitiveWordTool({
@@ -107,7 +105,7 @@ const sensitiveWordTool2 = new SensitiveWordTool({
  \t\r\n~!@#$%^&*()_+-=【】、{}|;\':"，。、《》？αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ。，、；：？！…—·ˉ¨‘’“”々～‖∶＂＇｀｜〃〔〕〈〉《》「」『』．〖〗【】（）［］｛｝ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩①②③④⑤⑥⑦⑧⑨⑩⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇≈≡≠＝≤≥＜＞≮≯∷±＋－×÷／∫∮∝∞∧∨∑∏∪∩∈∵∴⊥∥∠⌒⊙≌∽√§№☆★○●◎◇◆□℃‰€■△▲※→←↑↓〓¤°＃＆＠＼︿＿￣―♂♀┌┍┎┐┑┒┓─┄┈├┝┞┟┠┡┢┣│┆┊┬┭┮┯┰┱┲┳┼┽┾┿╀╁╂╃└┕┖┗┘┙┚┛━┅┉┤┥┦┧┨┩┪┫┃┇┋┴┵┶┷┸┹┺┻╋╊╉╈╇╆╅╄
 ```
 
-### `setNoiseWords`
+### `.setNoiseWords`
 
 设置干扰词。
 
@@ -117,9 +115,9 @@ const sensitiveWordTool2 = new SensitiveWordTool({
 sensitiveWordTool.setNoiseWords(' $')
 ```
 
-### `clearWords`
+### `.clearWords`
 
-清空当前设置的干扰词。
+清空当前设置的所有敏感词。
 
 ##### 示例
 
@@ -127,7 +125,7 @@ sensitiveWordTool.setNoiseWords(' $')
 sensitiveWordTool.clearWords()
 ```
 
-### `addWords`
+### `.addWords`
 
 继续增加敏感词。
 
@@ -137,7 +135,7 @@ sensitiveWordTool.clearWords()
 sensitiveWordTool.addWords(['王八蛋', '王八羔子', '测试', '江南皮革厂'])
 ```
 
-### `match`
+### `.match`
 
 从文本中匹配出所有出现过的敏感词。返回匹配到的敏感词数组，如未匹配则返回空数组。
 
