@@ -65,7 +65,7 @@ console.log(banWords3) // ['江南皮革厂', '小姨子']
 - [ ] 支持 CI
 - [x] 提供 readme 文档
 - [ ] 提供默认的敏感词
-- [ ] 支持配置干扰词: `setNoiseWords`
+- [x] 支持配置干扰词: `setNoiseWords`
 - [ ] 支持从敏感词库中删除敏感词： `deleteWords`
 - [ ] 支持对敏感词进行过滤替代： `filter`
 - [ ] 支持校验文本中是否有敏感词： `verify`
