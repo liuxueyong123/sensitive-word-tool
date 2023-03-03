@@ -8,7 +8,7 @@
   "name": "sensitive-word-tool",
   "displayName": "sensitive-word-tool",
   "description": "基于 dfa 算法实现，非常轻巧的 JavaScript 敏感词过滤库🚀",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "publisher": "liuxueyong123",
   "author": {
     "name": "liuxueyong123",
@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@eslint/create-config": "0.4.2",
+    "@rollup/plugin-terser": "^0.4.0",
     "@rollup/plugin-typescript": "^11.0.0",
     "@types/jest": "^29.4.0",
     "@types/node": "*",
@@ -49,6 +50,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "jest": "^29.4.3",
     "rollup": "^3.18.0",
+    "rollup-plugin-cleanup": "^3.2.1",
     "rollup-plugin-dts": "^5.2.0",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
