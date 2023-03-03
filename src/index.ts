@@ -1,9 +1,11 @@
+import { defaultNoiseWords } from './config'
+
 interface WordMap { [property: string]: WordMap | boolean }
 
 class SensitiveWordTool {
   private readonly map: WordMap = {}
+  private noiseWordMap = SensitiveWordTool.generateNoiseWordMap(defaultNoiseWords)
   private static readonly LeafKey = '__leaf__'
-  private static readonly ignoredCharCodeMap = SensitiveWordTool.generateIgnoredCharCodeMap()
 
   /**
    * @description: 初始化敏感词
@@ -18,29 +20,12 @@ class SensitiveWordTool {
    * @description: 构建特殊字符的哈希表
    * @return {*}
    */
-  private static generateIgnoredCharCodeMap (): Record<number, boolean> {
-    const ignoreChars =
-      ' \t\r\n~!@#$%^&*()_+-=【】、{}|;\':"，。、《》？αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ。，、；：？！…—·ˉ¨‘’“”々～‖∶＂＇｀｜〃〔〕〈〉《》「」『』．〖〗【】（）［］｛｝ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩①②③④⑤⑥⑦⑧⑨⑩⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇≈≡≠＝≤≥＜＞≮≯∷±＋－×÷／∫∮∝∞∧∨∑∏∪∩∈∵∴⊥∥∠⌒⊙≌∽√§№☆★○●◎◇◆□℃‰€■△▲※→←↑↓〓¤°＃＆＠＼︿＿￣―♂♀┌┍┎┐┑┒┓─┄┈├┝┞┟┠┡┢┣│┆┊┬┭┮┯┰┱┲┳┼┽┾┿╀╁╂╃└┕┖┗┘┙┚┛━┅┉┤┥┦┧┨┩┪┫┃┇┋┴┵┶┷┸┹┺┻╋╊╉╈╇╆╅╄'
-    const ignoredCharCodeMap: Record<number, boolean> = {}
-    for (let i = 0, j = ignoreChars.length; i < j; i++) {
-      ignoredCharCodeMap[ignoreChars.charCodeAt(i)] = true
+  private static generateNoiseWordMap (noiseWords: string): Record<number, boolean> {
+    const noiseWordMap: Record<number, boolean> = {}
+    for (let i = 0, j = noiseWords.length; i < j; i++) {
+      noiseWordMap[noiseWords.charCodeAt(i)] = true
     }
-    return ignoredCharCodeMap
-  }
-
-  /**
-   * @description: 过滤掉字符串中的特殊字符
-   * @param {string} word 待过滤字符串
-   * @return {*}
-   */
-  private static filterIgnoredChar (word: string): string {
-    let ignoredWord = ''
-    for (let i = 0, len = word.length; i < len; i++) {
-      if (!SensitiveWordTool.ignoredCharCodeMap[word.charCodeAt(i)]) {
-        ignoredWord += word.charAt(i)
-      }
-    }
-    return ignoredWord
+    return noiseWordMap
   }
 
   /**
@@ -63,15 +48,39 @@ class SensitiveWordTool {
   }
 
   /**
+   * @description: 过滤掉字符串中的特殊字符
+   * @param {string} word 待过滤字符串
+   * @return {*}
+   */
+  private filterIgnoredChar (word: string): string {
+    let ignoredWord = ''
+    for (let i = 0, len = word.length; i < len; i++) {
+      if (!this.noiseWordMap[word.charCodeAt(i)]) {
+        ignoredWord += word.charAt(i)
+      }
+    }
+    return ignoredWord
+  }
+
+  /**
+   * @description: 手动设置干扰词，不设置时将采用默认干扰词
+   * @param {string} noiseWords
+   * @return {*}
+   */
+  public setNoiseWords (noiseWords: string): void {
+    this.noiseWordMap = SensitiveWordTool.generateNoiseWordMap(noiseWords)
+  }
+
+  /**
    * @description: 添加敏感词
    * @param {string[]} wordList 敏感词数组
    * @return {*}
    */
-  addWords (wordList: string[]): void {
+  public addWords (wordList: string[]): void {
     for (let i = 0, len = wordList.length; i < len; i++) {
       let point = this.map
-      // 对于配置的敏感词过滤掉特殊符号
-      const word = SensitiveWordTool.filterIgnoredChar(wordList[i])
+      // 对于配置的敏感词也过滤掉特殊符号
+      const word = this.filterIgnoredChar(wordList[i])
       for (let j = 0, wordLen = word.length; j < wordLen; j++) {
         // 当前节点已经是子节点，说明有更简短的敏感词，当前敏感词也就不需要再往下继续了
         if (SensitiveWordTool.isLeaf(point)) break
@@ -92,13 +101,13 @@ class SensitiveWordTool {
    * @param {string} content 待匹配内容
    * @return {string[]} 匹配到的敏感词数组
    */
-  match (content: string): string[] {
+  public match (content: string): string[] {
     const result: string[] = []
     let stack: string[] = []
     let point = this.map
     for (let i = 0, len = content.length; i < len; i++) {
       const code = content.charCodeAt(i)
-      if (SensitiveWordTool.ignoredCharCodeMap[code]) continue
+      if (this.noiseWordMap[code]) continue
 
       const char = content.charAt(i)
       point = point[char.toLowerCase()] as WordMap
