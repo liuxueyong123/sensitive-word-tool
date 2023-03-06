@@ -33,7 +33,7 @@ declare class SensitiveWordTool {
      * @param {string} word 待过滤字符串
      * @return {*}
      */
-    private filterIgnoredChar;
+    private filterNoiseChar;
     /**
      * @description: 手动设置干扰词，不设置时将采用默认干扰词
      * @param {string} noiseWords
@@ -57,6 +57,12 @@ declare class SensitiveWordTool {
      * @return {string[]} 匹配到的敏感词数组
      */
     match(content: string): string[];
+    /**
+     * @description: 检测文本中是否包含敏感词
+     * @param {string} content 待匹配内容
+     * @return {boolean}
+     */
+    verify(content: string): boolean;
 }
 
 export { Options, SensitiveWordTool as default };

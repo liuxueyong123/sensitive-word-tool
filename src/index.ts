@@ -60,7 +60,7 @@ class SensitiveWordTool {
    * @param {string} word 待过滤字符串
    * @return {*}
    */
-  private filterIgnoredChar (word: string): string {
+  private filterNoiseChar (word: string): string {
     let ignoredWord = ''
     for (let i = 0, len = word.length; i < len; i++) {
       if (!this.noiseWordMap[word.charCodeAt(i)]) {
@@ -96,7 +96,7 @@ class SensitiveWordTool {
     for (let i = 0, len = wordList.length; i < len; i++) {
       let point = this.map
       // 对于配置的敏感词也过滤掉特殊符号
-      const word = this.filterIgnoredChar(wordList[i])
+      const word = this.filterNoiseChar(wordList[i])
       for (let j = 0, wordLen = word.length; j < wordLen; j++) {
         // 当前节点已经是子节点，说明有更简短的敏感词，当前敏感词也就不需要再往下继续了
         if (SensitiveWordTool.isLeaf(point)) break
@@ -143,6 +143,33 @@ class SensitiveWordTool {
       point = this.map
     }
     return [...result]
+  }
+
+  /**
+   * @description: 检测文本中是否包含敏感词
+   * @param {string} content 待匹配内容
+   * @return {boolean}
+   */
+  public verify (content: string): boolean {
+    let stack: string[] = []
+    let point = this.map
+    for (let i = 0, len = content.length; i < len; i++) {
+      const code = content.charCodeAt(i)
+      if (this.noiseWordMap[code]) continue
+
+      const char = content.charAt(i)
+      point = point[char.toLowerCase()] as WordMap
+      if (point && !SensitiveWordTool.isLeaf(point)) {
+        stack.push(char)
+      } else if (!point) {
+        i = i - stack.length
+        stack = []
+        point = this.map
+      } else if (SensitiveWordTool.isLeaf(point)) {
+        return true
+      }
+    }
+    return false
   }
 }
 

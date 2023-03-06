@@ -50,7 +50,9 @@ import SensitiveWordTool from 'sensitive-word-tool'
 const sensitiveWordTool = new SensitiveWordTool()
 sensitiveWordTool.addWords(['王八蛋', '王八羔子', '测试', '江南皮革厂'])
 sensitiveWordTool.match('浙江温州，江南 皮革厂老板王$八&蛋，带着小姨子跑了') // ['江南皮革厂', '王八蛋']
+sensitiveWordTool.verify('浙江温州，江南 皮革厂老板王$八&蛋，带着小姨子跑了') // true
 sensitiveWordTool.match('皮革厂老板带着小姨子跑了') // []
+sensitiveWordTool.verify('皮革厂老板带着小姨子跑了') // false
 ```
 
 - 进阶用法
@@ -107,7 +109,7 @@ const sensitiveWordTool2 = new SensitiveWordTool({
 
 ### `.setNoiseWords`
 
-设置干扰词。
+设置干扰词。敏感词检测时会将待检测文本中的干扰词删除后再匹配。
 
 ##### 示例
 
@@ -142,7 +144,17 @@ sensitiveWordTool.addWords(['王八蛋', '王八羔子', '测试', '江南皮革
 ##### 示例
 
 ```ts
-sensitiveWordTool2.match('浙江温州，浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')
+sensitiveWordTool.match('浙江温州，浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')
+```
+
+### `.verify`
+
+检测文本中是否出现了敏感词。返回 `true` or `false`
+
+##### 示例
+
+```ts
+sensitiveWordTool2.verify('浙江温州，浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')
 ```
 
 ## TODOs
@@ -155,4 +167,4 @@ sensitiveWordTool2.match('浙江温州，浙江温州，江南 皮革$厂老板�
 - [x] 支持配置干扰词: `setNoiseWords`
 - [ ] 支持从敏感词库中删除敏感词： `deleteWords`
 - [ ] 支持对敏感词进行过滤替代： `filter`
-- [ ] 支持校验文本中是否有敏感词： `verify`
+- [x] 支持校验文本中是否有敏感词： `verify`
