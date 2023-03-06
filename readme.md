@@ -197,3 +197,4 @@ sensitiveWordTool.filter(content, filterChar)
 - [ ] 支持从敏感词库中删除敏感词： `deleteWords`（待定？）
 - [x] 支持对敏感词进行过滤替代： `filter`
 - [x] 支持校验文本中是否有敏感词： `verify`
+- 
