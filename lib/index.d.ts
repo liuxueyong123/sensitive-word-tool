@@ -53,16 +53,23 @@ declare class SensitiveWordTool {
     addWords(wordList: string[]): void;
     /**
      * @description: 在内容中匹配敏感词
-     * @param {string} content 待匹配内容
+     * @param {string} content 待匹配文本内容
      * @return {string[]} 匹配到的敏感词数组
      */
     match(content: string): string[];
     /**
      * @description: 检测文本中是否包含敏感词
-     * @param {string} content 待匹配内容
+     * @param {string} content 待匹配文本内容
      * @return {boolean}
      */
     verify(content: string): boolean;
+    /**
+     * @description: 对文本中的敏感词进行过滤替代
+     * @param {string} content 待匹配文本内容
+     * @param {string} filterChar 敏感词替代符，默认为'*'
+     * @return {*}
+     */
+    filter(content: string, filterChar?: string): string;
 }
 
 export { Options, SensitiveWordTool as default };

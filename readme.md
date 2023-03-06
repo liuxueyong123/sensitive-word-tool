@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/dm/sensitive-word-tool)
 
-基于 DFA 算法实现，非常轻巧的 JavaScript 敏感词处理库🚀🚀🚀
+基于 DFA 算法实现，非常轻巧完备的 JavaScript 敏感词处理库🚀🚀🚀
 
 ## 安装
 
@@ -49,10 +49,14 @@ import SensitiveWordTool from 'sensitive-word-tool'
 
 const sensitiveWordTool = new SensitiveWordTool()
 sensitiveWordTool.addWords(['王八蛋', '王八羔子', '测试', '江南皮革厂'])
-sensitiveWordTool.match('浙江温州，江南 皮革厂老板王$八&蛋，带着小姨子跑了') // ['江南皮革厂', '王八蛋']
-sensitiveWordTool.verify('浙江温州，江南 皮革厂老板王$八&蛋，带着小姨子跑了') // true
+
+sensitiveWordTool.match('浙江温州，江南《皮革厂》老板王(八)蛋，带着小姨子跑了') // ['江南皮革厂', '王八蛋']
+sensitiveWordTool.verify('浙江温州，江南《皮革厂》老板王(八)蛋，带着小姨子跑了') // true
+sensitiveWordTool.filter('浙江温州，江南《皮革厂》老板王(八)蛋，带着小姨子跑了') // 浙江温州，**(***)老板*(*)*，带着小姨子跑了
+
 sensitiveWordTool.match('皮革厂老板带着小姨子跑了') // []
 sensitiveWordTool.verify('皮革厂老板带着小姨子跑了') // false
+sensitiveWordTool.filter('皮革厂老板带着小姨子跑了') // 皮革厂老板带着小姨子跑了
 ```
 
 - 进阶用法
@@ -75,14 +79,6 @@ sensitiveWordTool.match('江南皮革厂老板带着小姨子跑了')  // ['江�
 // 支持主动设置干扰词（不设置将使用默认干扰词），敏感词检测时会将文本中的干扰词删除再匹配
 sensitiveWordTool.setNoiseWords(' $')
 sensitiveWordTool.match('浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')  // ['江南皮革厂']
-
-
-// 初始化时主动设置干扰词
-const sensitiveWordTool2 = new SensitiveWordTool({
-  wordList: ['王八蛋', '王八羔子', '测试', '江南皮革厂'],
-  noiseWords: ' $'
-})
-sensitiveWordTool2.match('浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')  // ['江南皮革厂']
 ```
 
 ## API
@@ -109,7 +105,7 @@ const sensitiveWordTool2 = new SensitiveWordTool({
 
 ### `.setNoiseWords`
 
-设置干扰词。敏感词检测时会将待检测文本中的干扰词删除后再匹配。
+设置干扰词。敏感词检测时会将待检测文本中的干扰词过滤掉再匹配。
 
 ##### 示例
 
@@ -157,14 +153,34 @@ sensitiveWordTool.match('浙江温州，浙江温州，江南 皮革$厂老板�
 sensitiveWordTool2.verify('浙江温州，浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')
 ```
 
+### `.filter`
+
+替换掉文本中出现的敏感词。
+
+##### 示例
+
+```ts
+sensitiveWordTool2.filter('浙江温州，浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了', '*')
+```
+
+##### 参数
+
+```ts
+sensitiveWordTool2.filter(content)
+sensitiveWordTool2.filter(content, filterChar)
+```
+
+- `content`: 待匹配文本内容
+- `filterChar`: 敏感词替代符，默认为`*`
+
 ## TODOs
 
 - [x] 增加单元测试
 - [X] 打包代码压缩
 - [ ] 支持 CI
-- [x] 提供 readme 文档
-- [ ] 提供默认的敏感词
+- [ ] 完善 readme 文档
+- [ ] 提供默认的敏感词(待定？)
 - [x] 支持配置干扰词: `setNoiseWords`
-- [ ] 支持从敏感词库中删除敏感词： `deleteWords`
-- [ ] 支持对敏感词进行过滤替代： `filter`
+- [ ] 支持从敏感词库中删除敏感词： `deleteWords`（待定？）
+- [x] 支持对敏感词进行过滤替代： `filter`
 - [x] 支持校验文本中是否有敏感词： `verify`

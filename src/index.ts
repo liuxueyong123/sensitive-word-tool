@@ -114,62 +114,108 @@ class SensitiveWordTool {
 
   /**
    * @description: 在内容中匹配敏感词
-   * @param {string} content 待匹配内容
+   * @param {string} content 待匹配文本内容
    * @return {string[]} 匹配到的敏感词数组
    */
   public match (content: string): string[] {
     const result = new Set<string>()
-    let stack: string[] = []
     let point = this.map
-    for (let i = 0, len = content.length; i < len; i++) {
-      const code = content.charCodeAt(i)
-      if (this.noiseWordMap[code]) continue
+    const len = content.length
+    for (let left = 0; left < len; left++) {
+      for (let right = left; right < len; right++) {
+        const code = content.charCodeAt(right)
+        if (this.noiseWordMap[code]) continue
 
-      const char = content.charAt(i)
-      point = point[char.toLowerCase()] as WordMap
-      if (point && !SensitiveWordTool.isLeaf(point)) {
-        stack.push(char)
-        continue
+        const char = content.charAt(right)
+        point = point[char.toLowerCase()] as WordMap
+
+        if (!point) {
+          point = this.map
+          break
+        } else if (SensitiveWordTool.isLeaf(point)) {
+          const matchedWord = this.filterNoiseChar(content.substring(left, right + 1))
+          result.add(matchedWord)
+          point = this.map
+          break
+        }
       }
-
-      if (!point) {
-        i = i - stack.length
-      } else if (SensitiveWordTool.isLeaf(point)) {
-        stack.push(char)
-        result.add(stack.join(''))
-      }
-
-      stack = []
-      point = this.map
     }
     return [...result]
   }
 
   /**
    * @description: 检测文本中是否包含敏感词
-   * @param {string} content 待匹配内容
+   * @param {string} content 待匹配文本内容
    * @return {boolean}
    */
   public verify (content: string): boolean {
-    let stack: string[] = []
     let point = this.map
-    for (let i = 0, len = content.length; i < len; i++) {
-      const code = content.charCodeAt(i)
-      if (this.noiseWordMap[code]) continue
+    const len = content.length
+    for (let left = 0; left < len; left++) {
+      for (let right = left; right < len; right++) {
+        const code = content.charCodeAt(right)
+        if (this.noiseWordMap[code]) continue
 
-      const char = content.charAt(i)
-      point = point[char.toLowerCase()] as WordMap
-      if (point && !SensitiveWordTool.isLeaf(point)) {
-        stack.push(char)
-      } else if (!point) {
-        i = i - stack.length
-        stack = []
-        point = this.map
-      } else if (SensitiveWordTool.isLeaf(point)) {
-        return true
+        const char = content.charAt(right)
+        point = point[char.toLowerCase()] as WordMap
+
+        if (!point) {
+          point = this.map
+          break
+        } else if (SensitiveWordTool.isLeaf(point)) {
+          return true
+        }
       }
     }
     return false
+  }
+
+  /**
+   * @description: 对文本中的敏感词进行过滤替代
+   * @param {string} content 待匹配文本内容
+   * @param {string} filterChar 敏感词替代符，默认为'*'
+   * @return {*}
+   */
+  public filter (content: string, filterChar: string = '*'): string {
+    let filteredContent = ''
+    let toReplaceCharLength = 0 // 接下来的多少个字符需要被替换
+    let point = this.map
+    const len = content.length
+
+    for (let left = 0; left < len; left++) {
+      const code = content.charCodeAt(left)
+      if (this.noiseWordMap[code]) {
+        filteredContent += content.charAt(left)
+        toReplaceCharLength = Math.max(toReplaceCharLength - 1, 0)
+        continue
+      }
+
+      for (let right = left; right < len; right++) {
+        const code = content.charCodeAt(right)
+        if (this.noiseWordMap[code]) continue
+
+        const char = content.charAt(right)
+        point = point[char.toLowerCase()] as WordMap
+
+        if (!point) {
+          filteredContent += toReplaceCharLength > 0 ? filterChar : content.charAt(left)
+          toReplaceCharLength = Math.max(toReplaceCharLength - 1, 0)
+          point = this.map
+          break
+        } else if (SensitiveWordTool.isLeaf(point)) {
+          filteredContent += filterChar
+          toReplaceCharLength = Math.max(toReplaceCharLength - 1, right - left)
+          point = this.map
+          break
+        }
+
+        if (right === len - 1) {
+          filteredContent += toReplaceCharLength > 0 ? filterChar : content.charAt(right)
+        }
+      }
+    }
+
+    return filteredContent
   }
 }
 
