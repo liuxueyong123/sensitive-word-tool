@@ -88,7 +88,7 @@ sensitiveWordTool.match('浙江温州，江南 皮革$厂老板王$八&蛋，带
 ##### 示例
 
 ```ts
-const sensitiveWordTool2 = new SensitiveWordTool({
+const sensitiveWordTool = new SensitiveWordTool({
   wordList: ['王八蛋', '王八羔子', '测试', '江南皮革厂'],
   noiseWords: ' $'
 })
@@ -110,6 +110,7 @@ const sensitiveWordTool2 = new SensitiveWordTool({
 ##### 示例
 
 ```ts
+const sensitiveWordTool = new SensitiveWordTool()
 sensitiveWordTool.setNoiseWords(' $')
 ```
 
@@ -120,6 +121,7 @@ sensitiveWordTool.setNoiseWords(' $')
 ##### 示例
 
 ```ts
+const sensitiveWordTool = new SensitiveWordTool()
 sensitiveWordTool.clearWords()
 ```
 
@@ -130,6 +132,7 @@ sensitiveWordTool.clearWords()
 ##### 示例
 
 ```ts
+const sensitiveWordTool = new SensitiveWordTool()
 sensitiveWordTool.addWords(['王八蛋', '王八羔子', '测试', '江南皮革厂'])
 ```
 
@@ -140,7 +143,9 @@ sensitiveWordTool.addWords(['王八蛋', '王八羔子', '测试', '江南皮革
 ##### 示例
 
 ```ts
-sensitiveWordTool.match('浙江温州，浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')
+const sensitiveWordTool = new SensitiveWordTool()
+sensitiveWordTool.addWords(['王八蛋', '王八羔子', '测试', '江南皮革厂'])
+sensitiveWordTool.match('浙江温州，江南《皮革厂》老板王(八)蛋，带着小姨子跑了') // ['江南皮革厂', '王八蛋']
 ```
 
 ### `.verify`
@@ -150,7 +155,9 @@ sensitiveWordTool.match('浙江温州，浙江温州，江南 皮革$厂老板�
 ##### 示例
 
 ```ts
-sensitiveWordTool2.verify('浙江温州，浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了')
+const sensitiveWordTool = new SensitiveWordTool()
+sensitiveWordTool.addWords(['王八蛋', '王八羔子', '测试', '江南皮革厂'])
+sensitiveWordTool.verify('浙江温州，江南《皮革厂》老板王(八)蛋，带着小姨子跑了') // true
 ```
 
 ### `.filter`
@@ -160,14 +167,16 @@ sensitiveWordTool2.verify('浙江温州，浙江温州，江南 皮革$厂老板
 ##### 示例
 
 ```ts
-sensitiveWordTool2.filter('浙江温州，浙江温州，江南 皮革$厂老板王$八&蛋，带着小姨子跑了', '*')
+const sensitiveWordTool = new SensitiveWordTool()
+sensitiveWordTool.addWords(['王八蛋', '王八羔子', '测试', '江南皮革厂'])
+sensitiveWordTool.filter('浙江温州，江南《皮革厂》老板王(八)蛋，带着小姨子跑了', '*') // 浙江温州，**《***》老板*(*)*，带着小姨子跑了
 ```
 
 ##### 参数
 
 ```ts
-sensitiveWordTool2.filter(content)
-sensitiveWordTool2.filter(content, filterChar)
+sensitiveWordTool.filter(content)
+sensitiveWordTool.filter(content, filterChar)
 ```
 
 - `content`: 待匹配文本内容
@@ -179,8 +188,9 @@ sensitiveWordTool2.filter(content, filterChar)
 - [X] 打包代码压缩
 - [ ] 支持 CI
 - [ ] 完善 readme 文档
-- [ ] 提供默认的敏感词(待定？)
+- [ ] 性能测试
 - [x] 支持配置干扰词: `setNoiseWords`
+- [ ] 提供默认的敏感词(待定？)
 - [ ] 支持从敏感词库中删除敏感词： `deleteWords`（待定？）
 - [x] 支持对敏感词进行过滤替代： `filter`
 - [x] 支持校验文本中是否有敏感词： `verify`
