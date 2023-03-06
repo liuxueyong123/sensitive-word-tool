@@ -1,6 +1,9 @@
 # sensitive-word-tool
 
+![npm](https://img.shields.io/npm/v/sensitive-word-tool)
 ![npm](https://img.shields.io/npm/dm/sensitive-word-tool)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/sensitive-word-tool)
+![NPM](https://img.shields.io/npm/l/sensitive-word-tool)
 
 基于 DFA 算法实现，非常轻巧完备的 JavaScript 敏感词处理库🚀🚀🚀
 
