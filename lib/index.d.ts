@@ -5,7 +5,7 @@ interface Options {
 declare class SensitiveWordTool {
     private map;
     private noiseWordMap;
-    private static readonly LeafKey;
+    private static readonly WordEndTag;
     /**
      * @description: 初始化
      * @param {Options} options
@@ -18,16 +18,11 @@ declare class SensitiveWordTool {
      */
     private static generateNoiseWordMap;
     /**
-     * @description: 当前对象是否是叶子节点
+     * @description: 当前对象是否达到了敏感词的结束
      * @param {WordMap} point
      * @return {*}
      */
-    private static isLeaf;
-    /**
-     * @description: 生成敏感词叶子节点
-     * @return {*}
-     */
-    private static generateLeafObj;
+    private static isWordEnd;
     /**
      * @description: 过滤掉字符串中的特殊字符
      * @param {string} word 待过滤字符串

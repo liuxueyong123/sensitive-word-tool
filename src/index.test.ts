@@ -296,20 +296,20 @@ describe('边界测试', () => {
   })
 
   it('敏感词之间出现包含关系:', () => {
-    // TODO: 目前的逻辑是只匹配最小的子集，如下将只匹配“测试”
+    const sensitiveWordTool = new SensitiveWordTool()
+    sensitiveWordTool.addWords(['测试用', '测试', '测试用例'])
 
-    // const sensitiveWordTool = new SensitiveWordTool()
-    // sensitiveWordTool.addWords(['测试用', '测试', '测试用例'])
+    const banWords = sensitiveWordTool.match(text)
+    expect(banWords).toHaveLength(3)
+    expect(banWords).toContain('测试用')
+    expect(banWords).toContain('测试')
+    expect(banWords).toContain('测试用例')
 
-    // const banWords = sensitiveWordTool.match(text)
-    // expect(banWords).toHaveLength(2)
-    // expect(banWords).toContain('测试')
+    const isIncludes = sensitiveWordTool.verify(text)
+    expect(isIncludes).toBeTruthy()
 
-    // const isIncludes = sensitiveWordTool.verify(text)
-    // expect(isIncludes).toBeTruthy()
-
-    // const filteredText = sensitiveWordTool.filter(text)
-    // expect(filteredText).toBe('这个库真的写了@好多 好*多的**& *例，希望未来能覆盖%更 多的边#界场景，不断变好')
+    const filteredText = sensitiveWordTool.filter(text)
+    expect(filteredText).toBe('这个库真的写了@好多 好*多的**& **，希望未来能覆盖%更 多的边#界场景，不断变好')
   })
 
   it('句首出现敏感词:', () => {

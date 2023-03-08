@@ -5,7 +5,7 @@
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/sensitive-word-tool)
 ![NPM](https://img.shields.io/npm/l/sensitive-word-tool)
 
-基于 DFA 算法实现，非常轻巧完备的 JavaScript 敏感词处理库🚀🚀🚀
+基于 DFA 算法实现，支持过滤掉干扰词的基础上处理敏感词，非常轻巧完备的 JavaScript 敏感词处理库🚀🚀🚀
 
 ## 安装
 
@@ -53,6 +53,7 @@ import SensitiveWordTool from 'sensitive-word-tool'
 const sensitiveWordTool = new SensitiveWordTool()
 sensitiveWordTool.addWords(['王八蛋', '王八羔子', '测试', '江南皮革厂'])
 
+// 《》()属于干扰词，会处理掉后再对敏感词进行处理
 sensitiveWordTool.match('浙江温州，江南《皮革厂》老板王(八)蛋，带着小姨子跑了') // ['江南皮革厂', '王八蛋']
 sensitiveWordTool.verify('浙江温州，江南《皮革厂》老板王(八)蛋，带着小姨子跑了') // true
 sensitiveWordTool.filter('浙江温州，江南《皮革厂》老板王(八)蛋，带着小姨子跑了') // 浙江温州，**(***)老板*(*)*，带着小姨子跑了
@@ -187,14 +188,13 @@ sensitiveWordTool.filter(content, filterChar)
 
 ## TODOs
 
-- [x] 增加单元测试
-- [X] 打包代码压缩
+- ✅ 增加单元测试
+- ✅ 打包代码压缩
 - [ ] 支持 CI
 - [ ] 完善 readme 文档
 - [ ] 性能测试
-- [x] 支持配置干扰词: `setNoiseWords`
-- [ ] 提供默认的敏感词(待定？)
-- [ ] 支持从敏感词库中删除敏感词： `deleteWords`（待定？）
-- [x] 支持对敏感词进行过滤替代： `filter`
-- [x] 支持校验文本中是否有敏感词： `verify`
-- 
+- ✅ 支持配置干扰词: `setNoiseWords`
+- [ ] 提供默认的敏感词
+- [ ] 支持从敏感词库中删除敏感词： `deleteWords`
+- ✅ 支持对敏感词进行过滤替代： `filter`
+- ✅ 支持校验文本中是否有敏感词： `verify`

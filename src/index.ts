@@ -10,7 +10,7 @@ export interface Options {
 class SensitiveWordTool {
   private map: WordMap = {}
   private noiseWordMap = SensitiveWordTool.generateNoiseWordMap(defaultNoiseWords)
-  private static readonly LeafKey = '__leaf__'
+  private static readonly WordEndTag = '__endTag__'
 
   /**
    * @description: 初始化
@@ -37,22 +37,12 @@ class SensitiveWordTool {
   }
 
   /**
-   * @description: 当前对象是否是叶子节点
+   * @description: 当前对象是否达到了敏感词的结束
    * @param {WordMap} point
    * @return {*}
    */
-  private static isLeaf (point: WordMap): boolean {
-    return Reflect.has(point, SensitiveWordTool.LeafKey)
-  }
-
-  /**
-   * @description: 生成敏感词叶子节点
-   * @return {*}
-   */
-  private static generateLeafObj (): WordMap {
-    return {
-      [SensitiveWordTool.LeafKey]: true
-    }
+  private static isWordEnd (point: WordMap): boolean {
+    return Reflect.has(point, SensitiveWordTool.WordEndTag)
   }
 
   /**
@@ -98,16 +88,12 @@ class SensitiveWordTool {
       // 对于配置的敏感词也过滤掉特殊符号
       const word = this.filterNoiseChar(wordList[i])
       for (let j = 0, wordLen = word.length; j < wordLen; j++) {
-        // 当前节点已经是子节点，说明有更简短的敏感词，当前敏感词也就不需要再往下继续了
-        if (SensitiveWordTool.isLeaf(point)) break
-
         const char = word.charAt(j).toLowerCase()
+        const currentNode = point[char] = (point[char] || {}) as WordMap
         if (j === wordLen - 1) {
-          point[char] = SensitiveWordTool.generateLeafObj()
-          break
+          currentNode[SensitiveWordTool.WordEndTag] = true
         }
-
-        point = point[char] = (point[char] || {}) as WordMap
+        point = currentNode
       }
     }
   }
@@ -122,6 +108,9 @@ class SensitiveWordTool {
     let point = this.map
     const len = content.length
     for (let left = 0; left < len; left++) {
+      const code = content.charCodeAt(left)
+      if (this.noiseWordMap[code]) continue
+
       for (let right = left; right < len; right++) {
         const code = content.charCodeAt(right)
         if (this.noiseWordMap[code]) continue
@@ -132,11 +121,9 @@ class SensitiveWordTool {
         if (!point) {
           point = this.map
           break
-        } else if (SensitiveWordTool.isLeaf(point)) {
+        } else if (SensitiveWordTool.isWordEnd(point)) {
           const matchedWord = this.filterNoiseChar(content.substring(left, right + 1))
           result.add(matchedWord)
-          point = this.map
-          break
         }
       }
     }
@@ -152,6 +139,9 @@ class SensitiveWordTool {
     let point = this.map
     const len = content.length
     for (let left = 0; left < len; left++) {
+      const code = content.charCodeAt(left)
+      if (this.noiseWordMap[code]) continue
+
       for (let right = left; right < len; right++) {
         const code = content.charCodeAt(right)
         if (this.noiseWordMap[code]) continue
@@ -162,7 +152,7 @@ class SensitiveWordTool {
         if (!point) {
           point = this.map
           break
-        } else if (SensitiveWordTool.isLeaf(point)) {
+        } else if (SensitiveWordTool.isWordEnd(point)) {
           return true
         }
       }
@@ -190,6 +180,7 @@ class SensitiveWordTool {
         continue
       }
 
+      let isMatched = false
       for (let right = left; right < len; right++) {
         const code = content.charCodeAt(right)
         if (this.noiseWordMap[code]) continue
@@ -197,20 +188,19 @@ class SensitiveWordTool {
         const char = content.charAt(right)
         point = point[char.toLowerCase()] as WordMap
 
-        if (!point) {
-          filteredContent += toReplaceCharLength > 0 ? filterChar : content.charAt(left)
-          toReplaceCharLength = Math.max(toReplaceCharLength - 1, 0)
-          point = this.map
-          break
-        } else if (SensitiveWordTool.isLeaf(point)) {
-          filteredContent += filterChar
+        if (point && SensitiveWordTool.isWordEnd(point)) {
+          if (!isMatched) {
+            filteredContent += filterChar
+          }
           toReplaceCharLength = Math.max(toReplaceCharLength - 1, right - left)
+          isMatched = true
+        } else if (!point || right === len - 1) {
+          if (!isMatched) {
+            filteredContent += toReplaceCharLength > 0 ? filterChar : content.charAt(left)
+            toReplaceCharLength = Math.max(toReplaceCharLength - 1, 0)
+          }
           point = this.map
           break
-        }
-
-        if (right === len - 1) {
-          filteredContent += toReplaceCharLength > 0 ? filterChar : content.charAt(right)
         }
       }
     }
