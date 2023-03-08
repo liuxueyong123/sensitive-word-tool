@@ -186,15 +186,17 @@ sensitiveWordTool.filter(content, filterChar)
 - `content`: 待匹配文本内容
 - `filterChar`: 敏感词替代符，默认为`*`
 
+## 说明
+
+本库是一个处理敏感词的工具库，所以不会提供默认的敏感词。如果需要的话可以[参考这里](https://github.com/fwwdn/sensitive-stop-words)。
+
 ## TODOs
 
 - ✅ 增加单元测试
 - ✅ 打包代码压缩
 - [ ] 支持 CI
-- [ ] 完善 readme 文档
+- ✅ 完善 readme 文档
 - [ ] 性能测试
 - ✅ 支持配置干扰词: `setNoiseWords`
-- [ ] 提供默认的敏感词
-- [ ] 支持从敏感词库中删除敏感词： `deleteWords`
 - ✅ 支持对敏感词进行过滤替代： `filter`
 - ✅ 支持校验文本中是否有敏感词： `verify`
