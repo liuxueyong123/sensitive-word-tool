@@ -51,7 +51,7 @@ pnpm add sensitive-word-tool
 - CommonJS 导入
 
 ```js
-const SensitiveWordTool = require('sensitive-word-tool')
+const { SensitiveWordTool } = require('sensitive-word-tool')
 ```
 
 - ESModule 导入
