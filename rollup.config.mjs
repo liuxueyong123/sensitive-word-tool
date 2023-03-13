@@ -8,25 +8,13 @@ const config = [
     input: 'src/index.ts',
     output: [
       {
-        file: './lib/index.esm.js',
-        format: 'es',
-        sourcemap: true
-      },
-      {
         file: './lib/index.cjs.js',
-        format: 'cjs',
-        sourcemap: true
-      },
-      {
-        file: './lib/index.umd.js',
-        format: 'umd',
-        name: 'SensitiveWordTool',
-        sourcemap: true
+        format: 'cjs'
       }
     ],
     plugins: [
       typescript({
-        tsconfig: './tsconfig.json'
+        tsconfig: './tsconfig.cjs.json'
       }),
       terser(),
       cleanup()
@@ -34,7 +22,23 @@ const config = [
   },
   {
     input: 'src/index.ts',
-    output: [{ file: 'lib/index.d.ts', format: 'es' }],
+    output: [
+      {
+        file: './lib/index.esm.js',
+        format: 'esm'
+      }
+    ],
+    plugins: [
+      typescript({
+        tsconfig: './tsconfig.esm.json'
+      }),
+      terser(),
+      cleanup()
+    ]
+  },
+  {
+    input: 'src/index.ts',
+    output: [{ file: 'lib/index.d.ts', format: 'ems' }],
     plugins: [dts()]
   }
 ]

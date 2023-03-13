@@ -67,4 +67,4 @@ declare class SensitiveWordTool {
     filter(content: string, filterChar?: string): string;
 }
 
-export { Options, SensitiveWordTool as default };
+export { Options, SensitiveWordTool, SensitiveWordTool as default };
