@@ -202,14 +202,3 @@ sensitiveWordTool.filter(content, filterChar)
 
 - `content`: 待匹配文本内容
 - `filterChar`: 敏感词替代符，默认为`*`
-
-## TODOs
-
-- ✅ 增加单元测试
-- ✅ 打包代码压缩
-- [ ] 支持 CI
-- ✅ 完善 readme 文档
-- [ ] 性能测试
-- ✅ 支持配置干扰词: `setNoiseWords`
-- ✅ 支持对敏感词进行过滤替代： `filter`
-- ✅ 支持校验文本中是否有敏感词： `verify`
