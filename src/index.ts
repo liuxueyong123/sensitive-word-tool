@@ -1,3 +1,5 @@
+import defaultWords from './words'
+
 const defaultNoiseWords = ' \t\r\n~!@#$%^&*()_+-=【】、{}|;\':"，。、《》？αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ。，、；：？！…—·ˉ¨‘’“”々～‖∶＂＇｀｜〃〔〕〈〉《》「」『』．〖〗【】（）［］｛｝ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩①②③④⑤⑥⑦⑧⑨⑩⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇≈≡≠＝≤≥＜＞≮≯∷±＋－×÷／∫∮∝∞∧∨∑∏∪∩∈∵∴⊥∥∠⌒⊙≌∽√§№☆★○●◎◇◆□℃‰€■△▲※→←↑↓〓¤°＃＆＠＼︿＿￣―♂♀┌┍┎┐┑┒┓─┄┈├┝┞┟┠┡┢┣│┆┊┬┭┮┯┰┱┲┳┼┽┾┿╀╁╂╃└┕┖┗┘┙┚┛━┅┉┤┥┦┧┨┩┪┫┃┇┋┴┵┶┷┸┹┺┻╋╊╉╈╇╆╅╄'
 
 interface WordMap { [property: string]: WordMap | boolean }
@@ -5,6 +7,7 @@ interface WordMap { [property: string]: WordMap | boolean }
 export interface Options {
   wordList?: string[]
   noiseWords?: string
+  useDefaultWords?: boolean
 }
 
 export class SensitiveWordTool {
@@ -18,9 +21,10 @@ export class SensitiveWordTool {
    * @return {*}
    */
   constructor (options: Options = {}) {
-    const { wordList = [], noiseWords = '' } = options
+    const { wordList = [], noiseWords = '', useDefaultWords = false } = options
 
     noiseWords && this.setNoiseWords(noiseWords)
+    useDefaultWords && this.addWords(defaultWords)
     this.addWords(wordList)
   }
 

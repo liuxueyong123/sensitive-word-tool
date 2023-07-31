@@ -174,6 +174,21 @@ describe('干扰词', () => {
 describe('添加敏感词', () => {
   const text = '怎么还可以这么测& 试呢，这个库可真好用呀。王@@八***羔 子112334'
 
+  it('使用默认敏感词:', () => {
+    const sensitiveWordTool = new SensitiveWordTool({ useDefaultWords: true })
+
+    const text = '怎么还可以这么测& 试呢，这个库可真好用呀。王@@八***羔 子112334出售 炸药weg'
+    const banWords = sensitiveWordTool.match(text)
+    expect(banWords).toHaveLength(1)
+    expect(banWords).toContain('炸药')
+
+    const isIncludes = sensitiveWordTool.verify(text)
+    expect(isIncludes).toBeTruthy()
+
+    const filteredText = sensitiveWordTool.filter(text, '*')
+    expect(filteredText).toBe('怎么还可以这么测& 试呢，这个库可真好用呀。王@@八***羔 子112334出售 **weg')
+  })
+
   it('初始化时添加敏感词:', () => {
     const sensitiveWordTool = new SensitiveWordTool({ wordList: ['测试', '王八蛋', '王八羔子', '测试一下'] })
 

@@ -1,6 +1,7 @@
 interface Options {
     wordList?: string[];
     noiseWords?: string;
+    useDefaultWords?: boolean;
 }
 declare class SensitiveWordTool {
     private map;

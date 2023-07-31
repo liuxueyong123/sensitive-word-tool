@@ -9,7 +9,7 @@
 
 ## 说明
 
-本库是一个处理敏感词的工具库，所以不会提供默认的敏感词。如果需要的话可以[参考这里](https://github.com/fwwdn/sensitive-stop-words)。
+本库是一个处理敏感词的工具库，但也提供了一些默认的敏感词。如果需要的话可以[参考这里](https://github.com/liuxueyong123/sensitive-word-tool/src/index.ts)。
 
 ## 性能
 
@@ -70,7 +70,7 @@ import SensitiveWordTool from 'sensitive-word-tool'
 const sensitiveWordTool = new SensitiveWordTool()
 sensitiveWordTool.addWords(['王八蛋', '王八羔子', '测试', '江南皮革厂'])
 
-// 《》()属于干扰词，会处理掉后再对敏感词进行处理
+// 《》()属于干扰词，将被自动忽略
 sensitiveWordTool.match('浙江温州，江南《皮革厂》老板王(八)蛋，带着小姨子跑了') // ['江南皮革厂', '王八蛋']
 sensitiveWordTool.verify('浙江温州，江南《皮革厂》老板王(八)蛋，带着小姨子跑了') // true
 sensitiveWordTool.filter('浙江温州，江南《皮革厂》老板王(八)蛋，带着小姨子跑了') // 浙江温州，**(***)老板*(*)*，带着小姨子跑了
