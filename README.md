@@ -9,7 +9,7 @@
 
 ## 说明
 
-本库是一个处理敏感词的工具库，但也提供了一些默认的敏感词。如果需要的话可以[参考这里](https://github.com/liuxueyong123/sensitive-word-tool/src/index.ts)。
+本库是一个处理敏感词的工具库，但也提供了一些默认的敏感词。如果需要的话可以[参考这里](https://github.com/liuxueyong123/sensitive-word-tool/blob/master/src/words/index.ts)。
 
 ## 性能
 
@@ -67,7 +67,13 @@ import SensitiveWordTool from 'sensitive-word-tool'
 ```ts
 import SensitiveWordTool from 'sensitive-word-tool'
 
-const sensitiveWordTool = new SensitiveWordTool()
+// 初始化时使用默认敏感词
+const sensitiveWordTool = new SensitiveWordTool({
+  useDefaultWords: true
+})
+sensitiveWordTool.match("资金周转救市，股市圈钱崩盘？联系我们！") // ['资金周转', '救市', '股市圈钱', '崩盘']
+
+// 继续添加敏感词
 sensitiveWordTool.addWords(['王八蛋', '王八羔子', '测试', '江南皮革厂'])
 
 // 《》()属于干扰词，将被自动忽略
@@ -111,7 +117,8 @@ sensitiveWordTool.match('浙江温州，江南 皮革$厂老板王$八&蛋，带
 ```ts
 const sensitiveWordTool = new SensitiveWordTool({
   wordList: ['王八蛋', '王八羔子', '测试', '江南皮革厂'],
-  noiseWords: ' $'
+  noiseWords: ' $',
+  useDefaultWords: true
 })
 ```
 
@@ -123,6 +130,8 @@ const sensitiveWordTool = new SensitiveWordTool({
 ```
  \t\r\n~!@#$%^&*()_+-=【】、{}|;\':"，。、《》？αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ。，、；：？！…—·ˉ¨‘’“”々～‖∶＂＇｀｜〃〔〕〈〉《》「」『』．〖〗【】（）［］｛｝ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩①②③④⑤⑥⑦⑧⑨⑩⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇≈≡≠＝≤≥＜＞≮≯∷±＋－×÷／∫∮∝∞∧∨∑∏∪∩∈∵∴⊥∥∠⌒⊙≌∽√§№☆★○●◎◇◆□℃‰€■△▲※→←↑↓〓¤°＃＆＠＼︿＿￣―♂♀┌┍┎┐┑┒┓─┄┈├┝┞┟┠┡┢┣│┆┊┬┭┮┯┰┱┲┳┼┽┾┿╀╁╂╃└┕┖┗┘┙┚┛━┅┉┤┥┦┧┨┩┪┫┃┇┋┴┵┶┷┸┹┺┻╋╊╉╈╇╆╅╄
 ```
+
+- `useDefaultWords`: 是否使用默认敏感词。默认值：`false`。默认敏感词[参考这里](https://github.com/liuxueyong123/sensitive-word-tool/blob/master/src/words/index.ts)
 
 ### `.setNoiseWords`
 
