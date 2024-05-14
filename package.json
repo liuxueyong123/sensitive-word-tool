@@ -13,7 +13,7 @@
   "name": "sensitive-word-tool",
   "displayName": "sensitive-word-tool",
   "description": "基于 DFA 算法实现，非常轻巧完备的 JavaScript 敏感词处理库🚀🚀🚀",
-  "version": "1.1.9",
+  "version": "1.1.10",
   "publisher": "liuxueyong123",
   "author": {
     "name": "liuxueyong123",

@@ -2,7 +2,7 @@ import defaultWords from './words'
 
 const defaultNoiseWords = ' \t\r\n~!@#$%^&*()_+-=【】、{}|;\':"，。、《》？αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ。，、；：？！…—·ˉ¨‘’“”々～‖∶＂＇｀｜〃〔〕〈〉《》「」『』．〖〗【】（）［］｛｝ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩①②③④⑤⑥⑦⑧⑨⑩⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇≈≡≠＝≤≥＜＞≮≯∷±＋－×÷／∫∮∝∞∧∨∑∏∪∩∈∵∴⊥∥∠⌒⊙≌∽√§№☆★○●◎◇◆□℃‰€■△▲※→←↑↓〓¤°＃＆＠＼︿＿￣―♂♀┌┍┎┐┑┒┓─┄┈├┝┞┟┠┡┢┣│┆┊┬┭┮┯┰┱┲┳┼┽┾┿╀╁╂╃└┕┖┗┘┙┚┛━┅┉┤┥┦┧┨┩┪┫┃┇┋┴┵┶┷┸┹┺┻╋╊╉╈╇╆╅╄'
 
-interface WordMap { [property: string]: WordMap | boolean }
+interface WordMap { [property: string | symbol]: WordMap | boolean }
 
 export interface Options {
   wordList?: string[]
@@ -13,7 +13,7 @@ export interface Options {
 export class SensitiveWordTool {
   private map: WordMap = {}
   private noiseWordMap = SensitiveWordTool.generateNoiseWordMap(defaultNoiseWords)
-  private static readonly WordEndTag = '__endTag__'
+  private static readonly WORD_END_TAG: symbol = Symbol('WORD_END_TAG')
 
   /**
    * @description: 初始化
@@ -46,7 +46,7 @@ export class SensitiveWordTool {
    * @return {*}
    */
   private static isWordEnd (point: WordMap): boolean {
-    return Reflect.has(point, SensitiveWordTool.WordEndTag)
+    return Reflect.has(point, SensitiveWordTool.WORD_END_TAG)
   }
 
   /**
@@ -95,7 +95,7 @@ export class SensitiveWordTool {
         const char = word.charAt(j).toLowerCase()
         const currentNode = point[char] = (point[char] || {}) as WordMap
         if (j === wordLen - 1) {
-          currentNode[SensitiveWordTool.WordEndTag] = true
+          currentNode[SensitiveWordTool.WORD_END_TAG] = true
         }
         point = currentNode
       }

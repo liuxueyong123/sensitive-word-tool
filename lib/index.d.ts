@@ -6,7 +6,7 @@ interface Options {
 declare class SensitiveWordTool {
     private map;
     private noiseWordMap;
-    private static readonly WordEndTag;
+    private static readonly WORD_END_TAG;
     /**
      * @description: 初始化
      * @param {Options} options
